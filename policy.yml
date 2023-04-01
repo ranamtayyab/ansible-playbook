@@ -1,0 +1,26 @@
+---
+- name: Manage policies
+  hosts: redhat.mlynx.pk
+  become: yes
+  tasks:
+    - name: Install policycoreutils-python-utils package
+      yum:
+        name: policycoreutils-python-utils
+        state: present
+
+    - name: Define new SELinux boolean policy
+      seboolean:
+        name: "{{ policy_name }}"
+        value: "{{ policy_value }}"
+        state: "{{ policy_state }}"
+
+    - name: Set new system policy
+      selinux:
+        policy: "{{ policy_policy }}"
+        state: "{{ policy_state }}"
+
+  vars:
+    policy_name: httpd_can_network_connect
+    policy_value: on
+    policy_state: yes
+    policy_policy: targeted
