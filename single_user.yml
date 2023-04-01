@@ -4,7 +4,7 @@
   become: yes
   vars:
     username: tayyab
-    encrypted_password: "{{ 'redhat@123' | password_hash('sha512', 'my_salt') }}"
+    encrypted_password: "{{ 'redhat@123' | password_hash('sha512') }}"
   tasks:
     - name: Create user account
       user:
