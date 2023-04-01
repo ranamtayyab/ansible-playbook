@@ -12,7 +12,9 @@
     - name: Set domain name
       win_domain:
         dns_domain_name: "{{ domain_name }}"
-        safe_mode_admin_password: "{{ administrator_password }}"
+        domain_admin_user: ansible@mlynx.pk
+        domain_admin_password: Mlynx@1234
+        safe_mode_password: Mlynx@1234
         state: domain
     - name: Create Organizational Unit (OU) for computers
       win_domain:
