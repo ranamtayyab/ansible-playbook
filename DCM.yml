@@ -1,29 +1,16 @@
----
-- name: Manage Domain Controller
+- name: Add a user to Active Directory
   hosts: dns.mlynx.pk
   tasks:
-    - name: Install AD DS role
-      win_feature:
-        name: AD-Domain-Services
+    - name: Create the user account
+      win_user:
+        name: multilynx
+        password: Mlynx@1234
         state: present
-    - name: Set domain name
-      win_domain:
-        dns_domain_name: mlynx.pk
-        domain_admin_user: ansible@mlynx.pk
-        domain_admin_password: Call ME
-        safe_mode_password: 
-        state: domain
-    - name: Create Organizational Unit (OU) for computers
-      win_domain:
-        dns_domain_name: mlynx.pk
-        safe_mode_password: 
-        name: Computers
-        ou: "OU=Computers,DC=mlynx.pk.split('.') | join(',DC=')"
-        state: ou
-    - name: Create Organizational Unit (OU) for users
-      win_domain:
-        dns_domain_name: mlynx.pk
-        safe_mode_password: 
-        name: Users
-        ou: "OU=Users,DC=mlynx.pk.split('.') | join(',DC=')"
-        state: PK
+        groups: "Domain Users"
+        password_never_expires: yes
+        description: "Testing Playbook"
+    - name: Add the user to a group
+      win_domain_group_membership:
+        name: "Administrators Group"
+        members: "multilynx"
+        state: present
