@@ -1,0 +1,38 @@
+---
+- name: Manage Red Hat patches
+  hosts: redhat.mlynx.pk
+  become: yes
+  tasks:
+    - name: Enable Red Hat repositories
+      redhat_subscription:
+        state: present
+        username: username
+        password: pass
+        repositories: "{{ rhn_repositories }}"
+      vars:
+        rhn_repositories:
+          - rhel-7-server-rpms
+          - rhel-7-server-optional-rpms
+          - rhel-7-server-extras-rpms
+
+    - name: Install Red Hat patches
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Remove specific Red Hat patches
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ rhn_removed_patches }}"
+      vars:
+        rhn_removed_patches:
+          - kernel-3.10.0-123.el7.x86_64
+
+    - name: Update Red Hat patch policies
+      redhat_subscription:
+        state: present
+        username: username
+        password: pass
+        autosubscribe: yes
+        release: 7.10
