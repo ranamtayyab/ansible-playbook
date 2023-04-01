@@ -17,9 +17,6 @@
         dns_servers:
           - 8.8.8.8
           - 1.1.1.1
-    - name: Disable firewall
-      win_firewall:
-        state: disabled
     - name: Create the user account
       win_user:
         name: multilynx
