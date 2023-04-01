@@ -1,0 +1,24 @@
+---
+- name: Install/Upgrade Packages
+  hosts: all
+  become: yes
+  vars:
+    package_list:
+      - openssl
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ package_list }}"
+
+    - name: Upgrade packages
+      package:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ package_list }}"
