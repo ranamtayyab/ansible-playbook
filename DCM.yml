@@ -9,8 +9,3 @@
         groups: "Domain Users"
         password_never_expires: yes
         description: "Testing Playbook"
-    - name: Add the user to a group
-      win_domain_group_membership:
-        name: "Administrators Group"
-        members: "multilynx"
-        state: present
