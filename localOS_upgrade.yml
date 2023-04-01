@@ -1,0 +1,25 @@
+---
+- name: Upgrade OS
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update yum cache
+      yum:
+        name: '*'
+        state: latest
+        exclude: kernel*
+
+    - name: Upgrade kernel
+      yum:
+        name: kernel*
+        state: latest
+
+    - name: Reboot if kernel was upgraded
+      reboot:
+        when: "'kernel' in ansible_facts['pending_package_updates']"
+
+    - name: Clean up package cache
+      yum:
+        name: '*'
+        state: absent
