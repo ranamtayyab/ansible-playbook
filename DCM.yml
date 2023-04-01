@@ -1,17 +1,9 @@
 - name: Manage Domain Controllers
   hosts: dns.mlynx.pk
   tasks:
-    - name: Install Active Directory Domain Services
-      win_feature:
-        name: AD-Domain-Services
-        state: present
-    - name: Promote server to Domain Controller
-      win_domain_controller:
-        domain_admin_user: ansible@mlynx.pk
-        domain_admin_password: Mlynx@1234
-        domain_name: mlynx.pk
-        safe_mode_password: Mlynx@1234
-        state: promote
+    - name: Disable firewall
+      win_firewall:
+        state: "disabled"
     - name: Set DNS forwarders
       win_dns_client:
         dns_servers:
