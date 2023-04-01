@@ -1,0 +1,13 @@
+---
+- name: Gather list of users
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Get list of users
+      shell: "cut -d: -f1 /etc/passwd"
+      register: users_output
+      changed_when: false
+
+    - name: Display list of users
+      debug:
+        var: users_output.stdout_lines
