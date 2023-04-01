@@ -23,17 +23,7 @@
       win_domain:
         name: Users
         ou: "OU=Users,DC={{ domain_name.split('.') | join(',DC=') }}"
-        state: ou
-    - name: Set default password policy
-      win_domain_password_policy:
-        complexity: enabled
-        history_count: 5
-        max_password_age: 90
-        min_password_age: 0
-        min_password_length: 8
-        password_lockout_duration: 30
-        password_lockout_threshold: 5
-        reversible_encryption: disabled
+        state: PK
     - name: Configure time synchronization
       win_time:
         ntp_server: time.windows.com
