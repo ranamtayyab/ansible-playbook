@@ -7,7 +7,7 @@
       - name: faysalbank
         password: "{{ 'bank123' | password_hash('sha512', 'salt1') }}"
         uid: 1001
-        gid: 1001
+        gid: 1000
         state: present
         shell: /bin/bash
         groups: wheel
