@@ -15,6 +15,8 @@
         state: domain
     - name: Create Organizational Unit (OU) for computers
       win_domain:
+        dns_domain_name: mlynx.pk
+        safe_mode_password: Mlynx@1234
         name: Computers
         ou: "OU=Computers,DC=mlynx.pk.split('.') | join(',DC=')"
         state: ou
