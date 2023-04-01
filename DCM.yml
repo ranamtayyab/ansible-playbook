@@ -24,24 +24,3 @@
         name: Users
         ou: "OU=Users,DC={{ domain_name.split('.') | join(',DC=') }}"
         state: PK
-    - name: Configure time synchronization
-      win_time:
-        ntp_server: time.windows.com
-        state: present
-    - name: Enable firewall exceptions for domain controller
-      win_firewall_rule:
-        name: "{{ item }}"
-        direction: in
-        action: allow
-        protocol: tcp
-        local_port: "{{ port }}"
-        remote_ip: any
-        state: present
-      loop:
-        - "Remote Desktop"
-        - "DNS Server"
-        - "Kerberos Key Distribution Center"
-        - "Netlogon Service"
-        - "Windows Management Instrumentation (WMI)"
-      vars:
-        port: 53, 88, 135, 139, 389, 445, 464, 636, 3268, 3269, 49152-65535
