@@ -1,9 +1,6 @@
 - name: Manage Domain Controllers
   hosts: dns.mlynx.pk
   tasks:
-    - name: Disable firewall
-      win_firewall:
-        state: "disabled"
     - name: Set DNS forwarders
       win_dns_client:
         dns_servers:
