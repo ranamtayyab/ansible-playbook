@@ -1,6 +1,30 @@
-- name: Add a user to Active Directory
+- name: Manage Domain Controllers
   hosts: dns.mlynx.pk
   tasks:
+    - name: Install Active Directory Domain Services
+      win_feature:
+        name: AD-Domain-Services
+        state: present
+    - name: Promote server to Domain Controller
+      win_domain_controller:
+        domain_admin_user: ansible@mlynx.pk
+        domain_admin_password: Mlynx@1234
+        domain_name: mlynx.pk
+        safe_mode_password: Mlynx@1234
+        state: promote
+    - name: Set DNS forwarders
+      win_dns_client:
+        dns_servers:
+          - 8.8.8.8
+          - 1.1.1.1
+    - name: Configure time synchronization
+      win_timedate:
+        ntp_servers:
+          - 10.0.7.1
+        state: set
+    - name: Disable firewall
+      win_firewall:
+        state: disabled
     - name: Create the user account
       win_user:
         name: multilynx
@@ -8,4 +32,4 @@
         state: present
         groups: "Domain Users"
         password_never_expires: yes
-        description: "Testing Playbook"
+        description: "Testing Playbook"    
