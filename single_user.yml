@@ -1,0 +1,14 @@
+---
+- name: Create new user with encrypted password
+  hosts: all
+  become: yes
+  vars:
+    username: tayyab
+    encrypted_password: "{{ 'redhat@123' | password_hash('sha512', 'my_salt') }}"
+  tasks:
+    - name: Create user account
+      user:
+        name: "{{ username }}"
+        password: "{{ encrypted_password }}"
+        state: present
+      become: yes
