@@ -1,9 +1,6 @@
 ---
 - name: Manage Domain Controller
   hosts: dns.mlynx.pk
-  vars:
-    domain_name: mlynx.pk
-    administrator_password: Mlynx@1234
   tasks:
     - name: Install AD DS role
       win_feature:
@@ -11,7 +8,7 @@
         state: present
     - name: Set domain name
       win_domain:
-        dns_domain_name: "{{ domain_name }}"
+        dns_domain_name: mlynx.pk
         domain_admin_user: ansible@mlynx.pk
         domain_admin_password: Mlynx@1234
         safe_mode_password: Mlynx@1234
