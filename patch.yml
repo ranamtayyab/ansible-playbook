@@ -11,9 +11,9 @@
         repositories: "{{ rhn_repositories }}"
       vars:
         rhn_repositories:
-          - rhel-7-server-rpms
-          - rhel-7-server-optional-rpms
-          - rhel-7-server-extras-rpms
+          - rhel-8-server-rpms
+          - rhel-8-server-optional-rpms
+          - rhel-8-server-extras-rpms
 
     - name: Install Red Hat patches
       yum:
@@ -35,4 +35,4 @@
         username: username
         password: pass
         autosubscribe: yes
-        release: 7.10
+        release: 8.2
