@@ -19,4 +19,4 @@
         state: absent
 
   vars:
-    package_name: httpd
+    package_name: openssl
