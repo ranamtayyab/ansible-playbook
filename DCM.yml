@@ -3,7 +3,7 @@
   hosts: dns.mlynx.pk
   vars:
     domain_name: mlynx.pk
-    administrator_password: CALL ME
+    administrator_password: Qaz@zaq12)(
   tasks:
     - name: Install AD DS role
       win_feature:
