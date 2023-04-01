@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   vars:
-    username: tayyab
+    username: redhat123
     encrypted_password: "{{ 'redhat@123' | password_hash('sha512') }}"
   tasks:
     - name: Create user account
