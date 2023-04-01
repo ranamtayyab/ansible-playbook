@@ -1,6 +1,6 @@
 ---
 - name: Manage users
-  hosts: all
+  hosts: redhat.mlynx.pk
   become: yes
   vars:
     users:
