@@ -1,13 +1,29 @@
 ---
-- hosts: 'all'
-  remote_user: root
-  gather_facts: no
+- name: Manage users
+  hosts: all
+  become: yes
   vars:
-    user: testing_user
-    password: "{{ 'redhat@123' }}"
-
+    users:
+      - name: faysalbank
+        password: "{{ 'bank123' | password_hash('sha512', 'salt1') }}"
+        uid: 1001
+        gid: 1001
+        state: present
+        shell: /bin/bash
+        groups: wheel
+        login_class: ""
+        enabled: true
   tasks:
-    - name: Create user
+    - name: Create or update user accounts
       user:
-        name: "{{ user }}"
-        password: "{{ password | password_hash('sha512') }}"
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        uid: "{{ item.uid }}"
+        group: "{{ item.gid }}"
+        state: "{{ item.state }}"
+        shell: "{{ item.shell }}"
+        groups: "{{ item.groups }}"
+        login_class: "{{ item.login_class }}"
+        generate_ssh_key: "{{ item.enabled }}"
+      with_items: "{{ users }}"
+      become: yes
