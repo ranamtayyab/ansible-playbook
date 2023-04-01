@@ -1,22 +1,24 @@
 ---
-- name: Manage Red Hat patches
+- name: Install/Upgrade Packages
   hosts: redhat.mlynx.pk
-  become: true
-  tasks:
-    - name: Update all packages
-      yum:
-        name: '*'
-        state: latest
-
-    - name: Update specific package
-      yum:
-        name: "{{ package_name }}"
-        state: latest
-
-    - name: Remove specific package
-      yum:
-        name: "{{ package_name }}"
-        state: absent
-
+  become: yes
   vars:
-    package_name: openssl
+    package_list:
+      - openssl
+  tasks:
+    - name: Update package cache
+      yum:
+        update_cache: yes
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ package_list }}"
+
+    - name: Upgrade packages
+      package:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ package_list }}"
