@@ -1,6 +1,6 @@
 ---
 - name: Gather list of users
-  hosts: redhat.mlynx.pk
+  hosts: all
   gather_facts: yes
   tasks:
     - name: Get list of users
