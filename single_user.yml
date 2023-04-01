@@ -4,7 +4,7 @@
   gather_facts: no
   vars:
     user: testing_user
-    password: "{{ lookup('redhat@123', '/tmp/password chars=ascii_letters') }}"
+    password: "{{ 'redhat@123' }}"
 
   tasks:
     - name: Create user
