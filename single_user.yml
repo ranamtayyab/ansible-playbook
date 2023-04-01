@@ -1,14 +1,13 @@
 ---
-- name: Create new user with encrypted password
-  hosts: all
-  become: yes
+- hosts: 'all'
+  remote_user: root
+  gather_facts: no
   vars:
-    username: redhat123
-    encrypted_password: "{{ 'redhat@123' | password_hash('sha512') }}"
+    user: testing_user
+    password: "{{ lookup('redhat@123', '/tmp/password chars=ascii_letters') }}"
+
   tasks:
-    - name: Create user account
+    - name: Create user
       user:
-        name: "{{ username }}"
-        password: "{{ encrypted_password }}"
-        state: present
-      become: yes
+        name: "{{ user }}"
+        password: "{{ password | password_hash('sha512') }}"
