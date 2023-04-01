@@ -2,7 +2,7 @@
 - name: Manage Domain Controller
   hosts: dns.mlynx.pk
   vars:
-    domain_name: testmlynx.pk
+    domain_name: mlynx.pk
     administrator_password: Qaz@zaq12)(
   tasks:
     - name: Install AD DS role
