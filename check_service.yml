@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: dns.mlynx.pk
   tasks:
 
   - name: Check if a service is installed
