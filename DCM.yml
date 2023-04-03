@@ -8,9 +8,9 @@
           - 1.1.1.1
     - name: Create the user account
       win_user:
-        name: multilynx
-        password: Mlynx@1234
+        name: ibrahim
+        password: Mlynx@123
         state: present
         groups: "Domain Users"
         password_never_expires: yes
-        description: "Testing Playbook"    
+        description: "Testing Playbook by Ibrahim"    
