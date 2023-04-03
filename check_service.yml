@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+
+  - name: Check if a service is installed
+    win_service:
+      name: SNMPTRAP
+    register: service_info
