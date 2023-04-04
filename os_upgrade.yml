@@ -21,7 +21,7 @@
     - name: Fail if upgrade failed
       fail:
         msg: "OS upgrade failed!"
-      when: os_version.stdout_lines[0] != '8.7.1908'
+      when: os_version.stdout_lines[0] != '8.7'
 
     - name: Reboot server
       reboot:
