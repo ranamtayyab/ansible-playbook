@@ -1,0 +1,26 @@
+---
+- name: Enable/Disable Users
+  hosts: all
+  become: true
+
+  vars:
+    users:
+      - name: user1
+        state: present
+      - name: user2
+        state: absent
+      # Add additional users as needed
+
+  tasks:
+    - name: Enable or Disable users
+      user:
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+      with_items: "{{ users }}"
+      register: users_changed
+
+    - name: Fail if any user changes failed
+      fail:
+        msg: "Failed to change user: {{ item.item.name }}"
+      with_items: "{{ users_changed.results }}"
+      when: item.failed == true
