@@ -1,18 +1,29 @@
 ---
-- name: Upgrade Red Hat OS
+- name: Upgrade OS
   hosts: redhat.mlynx.pk
-  become: yes
+  become: true
+
   tasks:
-    - name: Check for updates
-      redhat_subscription:
-        state: present
-        username: username
-        password: pass
-      register: rhn_updates
+    - name: Check if update is available
+      command: "dnf check-update --refresh | grep -v '^.I'"
+      register: update_available
+      changed_when: false
 
     - name: Upgrade OS
-      redhat_subscription:
-        state: latest
-        username: username
-        password: pass
-      when: rhn_updates.updates_available == True
+      command: "dnf upgrade -y"
+      when: update_available.stdout_lines != ''
+
+    - name: Check if upgrade succeeded
+      shell: "rpm -q rhel-8-for-x86_64 | awk '{print $3}'"
+      register: os_version
+      changed_when: false
+
+    - name: Fail if upgrade failed
+      fail:
+        msg: "OS upgrade failed!"
+      when: os_version.stdout_lines[0] != '8.7.1908'
+
+    - name: Reboot server
+      reboot:
+        msg: "OS upgrade requires a reboot"
+      when: update_available.stdout_lines != ''
