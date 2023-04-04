@@ -1,0 +1,32 @@
+---
+- name: Modify Users
+  hosts: all
+  become: true
+
+  vars:
+    users:
+      - name: user1
+        password: "newpassword1"
+        uid: 1001
+        gid: 1001
+      - name: user2
+        password: "newpassword2"
+        uid: 1002
+        gid: 1002
+      # Add additional users as needed
+
+  tasks:
+    - name: Modify users
+      user:
+        name: "{{ item.name }}"
+        password: "{{ item.password | password_hash('sha512') }}" # Optional
+        uid: "{{ item.uid }}" # Optional
+        group: "{{ item.gid }}" # Optional
+      with_items: "{{ users }}"
+      register: users_changed
+
+    - name: Fail if any user changes failed
+      fail:
+        msg: "Failed to modify user: {{ item.item.name }}"
+      with_items: "{{ users_changed.results }}"
+      when: item.failed == true
