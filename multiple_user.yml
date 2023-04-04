@@ -1,0 +1,29 @@
+---
+- name: Create Multiple Users
+  hosts: redhat.mlynx.pk
+  become: true
+
+  vars:
+    users:
+      - username: faysal
+        password: "password1"
+      - username: bank
+        password: "password2"
+      # Add additional users as needed
+
+  tasks:
+    - name: Create users
+      user:
+        name: "{{ item.username }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        shell: /bin/bash
+        createhome: yes
+        state: present
+      with_items: "{{ users }}"
+      register: users_created
+
+    - name: Fail if any user creation failed
+      fail:
+        msg: "Failed to create user: {{ item.item.username }}"
+      with_items: "{{ users_created.results }}"
+      when: item.failed == true
