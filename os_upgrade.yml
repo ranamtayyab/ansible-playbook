@@ -14,7 +14,7 @@
       when: update_available.stdout_lines != ''
 
     - name: Check if upgrade succeeded
-      shell: "rpm -q rhel-8-for-x86_64 | awk '{print $3}'"
+      shell: "grep '^VERSION_ID' /etc/os-release"
       register: os_version
       changed_when: false
 
